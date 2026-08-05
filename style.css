@@ -8,15 +8,15 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: radial-gradient(circle at top, #c8f0ff 0%, #7ebcf0 20%, #ffffff 60%, #ffffff 100%);
-  color: #f8fbff;
+  background: radial-gradient(circle at top, #ffffff 0%, #ffffff 20%, #ffffff 60%, #ffffff 100%);
+  color: #ffffff;
   font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
 .game-shell {
   text-align: center;
   width: 100%;
-  max-width: 520px;
+  max-width: 740px;
   padding: 18px;
 }
 
@@ -24,19 +24,19 @@ header h1 {
   margin: 0;
   font-size: clamp(2.2rem, 4vw, 3.4rem);
   letter-spacing: 0.04em;
-  text-shadow: 0 8px 20px rgba(13, 31, 77, 0.4);
+  text-shadow: 0 8px 20px rgba(255, 255, 255, 0.4);
 }
 
 header p,
 footer p {
   margin: 10px 0 0;
   font-size: 0.95rem;
-  color: rgba(248, 251, 255, 0.88);
+  color: rgba(255, 255, 255, 0.88);
 }
 
 canvas {
   width: 100%;
-  max-width: 620px;
+  max-width: 720px;
   height: auto;
   border-radius: 28px;
   box-shadow: 0 24px 90px rgba(4, 12, 33, 0.45);
