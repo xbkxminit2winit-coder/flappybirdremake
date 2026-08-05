@@ -8,7 +8,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: radial-gradient(circle at top, #ffffff 0%, #ffffff 20%, #ffffff 60%, #ffffff 100%);
+  background: radial-gradient(circle at top, #00ffdd 0%, #3700ff 20%, #c300ff 60%, #c300ff 100%);
   color: #ffffff;
   font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
 }

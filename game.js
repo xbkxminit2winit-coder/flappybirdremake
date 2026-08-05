@@ -18,7 +18,7 @@ const player = {
   radius: 12,
   vel: 0,
   gravity: 0.46,
-  lift: -8.6,
+  lift: -7.4,
   rotation: 0,
 };
 
