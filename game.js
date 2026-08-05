@@ -53,7 +53,7 @@ function spawnObstacle() {
   obstacles.push({
     x: width + 28,
     top,
-    width: 64,
+    width: 88,
     gap: gapHeight,
     passed: false,
     wobble: Math.random() * 0.9 - 0.45,
