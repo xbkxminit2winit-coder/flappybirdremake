@@ -27,11 +27,11 @@ const gapHeight = 140;
 const spawnInterval = 122;
 
 function loadBest() {
-  state.best = Math.max(state.best, Number(localStorage.getItem("balloonBreezeBest") || "0"));
+  state.best = Math.max(state.best, Number(localStorage.getItem("catGlideBest") || "0"));
 }
 
 function saveBest() {
-  localStorage.setItem("balloonBreezeBest", String(state.best));
+  localStorage.setItem("catGlideBest", String(state.best));
 }
 
 function resetGame() {
@@ -197,47 +197,80 @@ function drawObstacle(obs) {
   }
 }
 
-function drawBalloon() {
+function drawCat() {
   ctx.save();
   ctx.translate(player.x, player.y);
-  ctx.rotate(player.rotation);
+  ctx.rotate(player.rotation * 0.75);
 
-  const balloonGrad = ctx.createRadialGradient(-6, -8, 4, 0, 0, player.radius);
-  balloonGrad.addColorStop(0, "#fff3fb");
-  balloonGrad.addColorStop(0.25, "#ffb1d4");
-  balloonGrad.addColorStop(1, "#d53c7f");
-
-  ctx.shadowColor = "rgba(214, 60, 127, 0.24)";
-  ctx.shadowBlur = 18;
-  ctx.fillStyle = balloonGrad;
+  // body
+  const bodyGrad = ctx.createRadialGradient(0, -4, 2, 0, 0, player.radius);
+  bodyGrad.addColorStop(0, "#f4e1c9");
+  bodyGrad.addColorStop(1, "#c68f62");
+  ctx.fillStyle = bodyGrad;
   ctx.beginPath();
-  ctx.ellipse(0, 0, player.radius * 0.72, player.radius, 0, 0, Math.PI * 2);
+  ctx.ellipse(0, 0, player.radius * 0.78, player.radius * 0.9, 0, 0, Math.PI * 2);
   ctx.fill();
-  ctx.shadowBlur = 0;
 
-  ctx.strokeStyle = "rgba(255,255,255,0.85)";
-  ctx.lineWidth = 2;
+  // ears
+  ctx.fillStyle = "#c1895a";
   ctx.beginPath();
-  ctx.moveTo(-4, -player.radius * 0.9);
-  ctx.lineTo(-3, -player.radius * 0.16);
+  ctx.moveTo(-player.radius * 0.45, -player.radius * 0.7);
+  ctx.lineTo(-player.radius * 0.65, -player.radius * 1.3);
+  ctx.lineTo(-player.radius * 0.25, -player.radius * 0.85);
+  ctx.closePath();
+  ctx.fill();
+  ctx.beginPath();
+  ctx.moveTo(player.radius * 0.45, -player.radius * 0.7);
+  ctx.lineTo(player.radius * 0.65, -player.radius * 1.3);
+  ctx.lineTo(player.radius * 0.25, -player.radius * 0.85);
+  ctx.closePath();
+  ctx.fill();
+
+  // face
+  ctx.fillStyle = "#f7ecdd";
+  ctx.beginPath();
+  ctx.ellipse(0, -player.radius * 0.08, player.radius * 0.58, player.radius * 0.55, 0, 0, Math.PI * 2);
+  ctx.fill();
+
+  // eyes
+  ctx.fillStyle = "#403d3f";
+  ctx.beginPath();
+  ctx.ellipse(-player.radius * 0.22, -player.radius * 0.18, 4, 6, 0, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.beginPath();
+  ctx.ellipse(player.radius * 0.22, -player.radius * 0.18, 4, 6, 0, 0, Math.PI * 2);
+  ctx.fill();
+
+  // nose
+  ctx.fillStyle = "#d16f73";
+  ctx.beginPath();
+  ctx.moveTo(0, -player.radius * 0.02);
+  ctx.lineTo(-4, player.radius * 0.08);
+  ctx.lineTo(4, player.radius * 0.08);
+  ctx.closePath();
+  ctx.fill();
+
+  // whiskers
+  ctx.strokeStyle = "#5b453e";
+  ctx.lineWidth = 1.5;
+  ctx.beginPath();
+  ctx.moveTo(-4, player.radius * 0.08);
+  ctx.lineTo(-player.radius * 0.6, player.radius * 0.08);
+  ctx.moveTo(-4, player.radius * 0.14);
+  ctx.lineTo(-player.radius * 0.62, player.radius * 0.16);
+  ctx.moveTo(4, player.radius * 0.08);
+  ctx.lineTo(player.radius * 0.6, player.radius * 0.08);
+  ctx.moveTo(4, player.radius * 0.14);
+  ctx.lineTo(player.radius * 0.62, player.radius * 0.16);
   ctx.stroke();
 
-  ctx.fillStyle = "rgba(255,255,255,0.95)";
+  // tail
+  ctx.strokeStyle = "#af7a4e";
+  ctx.lineWidth = 6;
   ctx.beginPath();
-  ctx.ellipse(-7, -12, 4.5, 6, 0, 0, Math.PI * 2);
-  ctx.fill();
-
-  ctx.fillStyle = "#6e1f5e";
-  ctx.fillRect(-15, player.radius * 0.62, 30, 9);
-  ctx.fillStyle = "#42301f";
-  ctx.fillRect(-20, player.radius * 0.62 + 9, 40, 16);
-
-  ctx.fillStyle = "#ffd36b";
-  ctx.beginPath();
-  ctx.moveTo(0, player.radius * 0.8);
-  ctx.quadraticCurveTo(7, player.radius + 16, 0, player.radius + 22);
-  ctx.quadraticCurveTo(-9, player.radius + 13, 0, player.radius * 0.8);
-  ctx.fill();
+  ctx.moveTo(player.radius * 0.7, player.radius * 0.2);
+  ctx.quadraticCurveTo(player.radius * 1.2, player.radius * 0.1, player.radius * 1.1, -player.radius * 0.4);
+  ctx.stroke();
 
   ctx.restore();
 }
@@ -262,7 +295,7 @@ function drawOverlay() {
     ctx.font = "600 24px system-ui, sans-serif";
     ctx.fillText("Tap or press SPACE to start", width / 2, height / 2 - 28);
     ctx.font = "400 16px system-ui, sans-serif";
-    ctx.fillText("Guide the balloon through the sky", width / 2, height / 2 + 4);
+    ctx.fillText("Guide the cat through the sky", width / 2, height / 2 + 4);
   }
 
   if (state.mode === "over") {
@@ -306,7 +339,7 @@ function gameLoop() {
     drawObstacle(obs);
   }
 
-  drawBalloon();
+  drawCat();
   drawOverlay();
 
   requestAnimationFrame(gameLoop);
