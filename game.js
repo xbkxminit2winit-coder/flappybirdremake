@@ -14,8 +14,8 @@ const state = {
 
 const player = {
   x: 120,
-  y: height / 2,
-  radius: 16,
+  y: height / 1,
+  radius: 12,
   vel: 0,
   gravity: 0.46,
   lift: -8.6,
