@@ -15,16 +15,16 @@ const state = {
 const player = {
   x: 120,
   y: height / 2,
-  radius: 24,
+  radius: 16,
   vel: 0,
-  gravity: 0.52,
-  lift: -10.4,
+  gravity: 0.46,
+  lift: -8.6,
   rotation: 0,
 };
 
 const obstacles = [];
-const gapHeight = 170;
-const spawnInterval = 140;
+const gapHeight = 140;
+const spawnInterval = 122;
 
 function loadBest() {
   state.best = Math.max(state.best, Number(localStorage.getItem("balloonBreezeBest") || "0"));
@@ -47,13 +47,13 @@ function resetGame() {
 }
 
 function spawnObstacle() {
-  const minTop = 72;
-  const maxTop = height - gapHeight - 180;
+  const minTop = 86;
+  const maxTop = height - gapHeight - 160;
   const top = minTop + Math.random() * (maxTop - minTop);
   obstacles.push({
-    x: width + 30,
+    x: width + 28,
     top,
-    width: 76,
+    width: 64,
     gap: gapHeight,
     passed: false,
     wobble: Math.random() * 0.9 - 0.45,
@@ -114,40 +114,86 @@ function checkCollisions() {
 
 function drawBackground() {
   const grad = ctx.createLinearGradient(0, 0, 0, height);
-  grad.addColorStop(0, "#0b1c48");
-  grad.addColorStop(0.45, "#2b5ca8");
-  grad.addColorStop(1, "#7fc3f5");
+  grad.addColorStop(0, "#8cc8f7");
+  grad.addColorStop(0.3, "#5aa9ee");
+  grad.addColorStop(0.65, "#1f4c96");
+  grad.addColorStop(1, "#091b3a");
   ctx.fillStyle = grad;
   ctx.fillRect(0, 0, width, height);
 
-  for (let i = 0; i < 6; i += 1) {
-    const x = (i * 160 + state.frame * 0.4) % 520 - 100;
-    const y = 110 + Math.sin((state.frame * 0.018 + i) * 1.05) * 18;
-    ctx.fillStyle = "rgba(255,255,255,0.16)";
+  ctx.fillStyle = "rgba(255,255,255,0.16)";
+  ctx.beginPath();
+  ctx.arc(width * 0.8, 100, 72, 0, Math.PI * 2);
+  ctx.fill();
+
+  for (let i = 0; i < 5; i += 1) {
+    const x = (i * 170 + state.frame * 0.45) % 560 - 120;
+    const y = 120 + Math.sin((state.frame * 0.02 + i) * 1.1) * 20;
+    ctx.fillStyle = "rgba(255,255,255,0.18)";
     ctx.beginPath();
-    ctx.ellipse(x, y, 52, 24, 0, 0, Math.PI * 2);
+    ctx.ellipse(x, y, 68, 24, 0, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
+  for (let i = 0; i < 3; i += 1) {
+    const x = 70 + i * 160;
+    const y = 430 + Math.sin((state.frame * 0.015 + i) * 1.25) * 12;
+    ctx.fillStyle = "rgba(255,255,255,0.06)";
+    ctx.beginPath();
+    ctx.ellipse(x, y, 200, 68, 0, 0, Math.PI * 2);
     ctx.fill();
   }
 }
 
 function drawGround() {
-  ctx.fillStyle = "#273a67";
-  ctx.fillRect(0, height - 42, width, 42);
-  ctx.fillStyle = "#395283";
-  ctx.fillRect(0, height - 62, width, 20);
+  ctx.fillStyle = "#1c2d5e";
+  ctx.fillRect(0, height - 46, width, 46);
+
+  ctx.fillStyle = "rgba(255,255,255,0.10)";
+  for (let x = 0; x < width; x += 44) {
+    ctx.fillRect(x, height - 40, 28, 8);
+  }
+
+  ctx.fillStyle = "rgba(255,255,255,0.14)";
+  ctx.fillRect(0, height - 76, width, 18);
+
+  ctx.fillStyle = "rgba(0,0,0,0.12)";
+  ctx.fillRect(0, height - 50, width, 10);
 }
 
 function drawObstacle(obs) {
-  ctx.fillStyle = "#fafcff";
-  ctx.fillRect(obs.x, 0, obs.width, obs.top);
-  ctx.fillRect(obs.x, obs.top + obs.gap, obs.width, height - obs.top - obs.gap - 42);
+  const grad = ctx.createLinearGradient(obs.x, 0, obs.x + obs.width, 0);
+  grad.addColorStop(0, "#ecf4ff");
+  grad.addColorStop(0.5, "#cddcff");
+  grad.addColorStop(1, "#eaf1ff");
+  ctx.fillStyle = grad;
 
-  ctx.fillStyle = "rgba(0,0,0,0.09)";
-  for (let y = 8; y < obs.top; y += 26) {
-    ctx.fillRect(obs.x + 12, y, obs.width - 24, 10);
+  ctx.beginPath();
+  ctx.moveTo(obs.x, 0);
+  ctx.lineTo(obs.x + obs.width, 0);
+  ctx.lineTo(obs.x + obs.width, obs.top - 10);
+  ctx.quadraticCurveTo(obs.x + obs.width, obs.top, obs.x + obs.width - 10, obs.top);
+  ctx.lineTo(obs.x + 10, obs.top);
+  ctx.quadraticCurveTo(obs.x, obs.top, obs.x, obs.top - 10);
+  ctx.closePath();
+  ctx.fill();
+
+  ctx.beginPath();
+  ctx.moveTo(obs.x, obs.top + obs.gap + 10);
+  ctx.quadraticCurveTo(obs.x, obs.top + obs.gap, obs.x + 10, obs.top + obs.gap);
+  ctx.lineTo(obs.x + obs.width - 10, obs.top + obs.gap);
+  ctx.quadraticCurveTo(obs.x + obs.width, obs.top + obs.gap, obs.x + obs.width, obs.top + obs.gap + 10);
+  ctx.lineTo(obs.x + obs.width, height - 42);
+  ctx.lineTo(obs.x, height - 42);
+  ctx.closePath();
+  ctx.fill();
+
+  ctx.fillStyle = "rgba(33, 65, 121, 0.16)";
+  for (let y = 10; y < obs.top; y += 28) {
+    ctx.fillRect(obs.x + 10, y, obs.width - 20, 9);
   }
-  for (let y = obs.top + obs.gap + 8; y < height - 42; y += 26) {
-    ctx.fillRect(obs.x + 12, y, obs.width - 24, 10);
+  for (let y = obs.top + obs.gap + 12; y < height - 44; y += 28) {
+    ctx.fillRect(obs.x + 10, y, obs.width - 20, 9);
   }
 }
 
@@ -156,47 +202,67 @@ function drawBalloon() {
   ctx.translate(player.x, player.y);
   ctx.rotate(player.rotation);
 
-  ctx.fillStyle = "#ff8fb7";
+  const balloonGrad = ctx.createRadialGradient(-6, -8, 4, 0, 0, player.radius);
+  balloonGrad.addColorStop(0, "#fff3fb");
+  balloonGrad.addColorStop(0.25, "#ffb1d4");
+  balloonGrad.addColorStop(1, "#d53c7f");
+
+  ctx.shadowColor = "rgba(214, 60, 127, 0.24)";
+  ctx.shadowBlur = 18;
+  ctx.fillStyle = balloonGrad;
   ctx.beginPath();
-  ctx.ellipse(0, 0, player.radius * 0.85, player.radius, 0, 0, Math.PI * 2);
+  ctx.ellipse(0, 0, player.radius * 0.72, player.radius, 0, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.shadowBlur = 0;
+
+  ctx.strokeStyle = "rgba(255,255,255,0.85)";
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.moveTo(-4, -player.radius * 0.9);
+  ctx.lineTo(-3, -player.radius * 0.16);
+  ctx.stroke();
+
+  ctx.fillStyle = "rgba(255,255,255,0.95)";
+  ctx.beginPath();
+  ctx.ellipse(-7, -12, 4.5, 6, 0, 0, Math.PI * 2);
   ctx.fill();
 
-  ctx.fillStyle = "#ffffff";
-  ctx.beginPath();
-  ctx.ellipse(-9, -11, 7, 9, 0, 0, Math.PI * 2);
-  ctx.fill();
+  ctx.fillStyle = "#6e1f5e";
+  ctx.fillRect(-15, player.radius * 0.62, 30, 9);
+  ctx.fillStyle = "#42301f";
+  ctx.fillRect(-20, player.radius * 0.62 + 9, 40, 16);
 
-  ctx.fillStyle = "#8f5b9c";
-  ctx.fillRect(-18, player.radius * 0.72, 36, 10);
-  ctx.fillStyle = "#6d4533";
-  ctx.fillRect(-24, player.radius * 0.72 + 10, 48, 20);
-
-  ctx.fillStyle = "#ffbe5b";
+  ctx.fillStyle = "#ffd36b";
   ctx.beginPath();
-  ctx.moveTo(0, player.radius * 0.9);
-  ctx.quadraticCurveTo(10, player.radius + 22, 0, player.radius + 30);
-  ctx.quadraticCurveTo(-12, player.radius + 18, 0, player.radius * 0.9);
+  ctx.moveTo(0, player.radius * 0.8);
+  ctx.quadraticCurveTo(7, player.radius + 16, 0, player.radius + 22);
+  ctx.quadraticCurveTo(-9, player.radius + 13, 0, player.radius * 0.8);
   ctx.fill();
 
   ctx.restore();
 }
 
 function drawOverlay() {
+  ctx.fillStyle = "rgba(255,255,255,0.10)";
+  ctx.fillRect(16, 18, 146, 72);
+  ctx.fillStyle = "rgba(255,255,255,0.08)";
+  ctx.fillRect(24, 26, 130, 56);
+
   ctx.fillStyle = "#ffffff";
-  ctx.font = "700 36px system-ui, sans-serif";
+  ctx.font = "700 38px system-ui, sans-serif";
   ctx.textAlign = "left";
-  ctx.fillText(String(state.score), 24, 56);
+  ctx.fillText(String(state.score), 28, 60);
 
   ctx.font = "500 16px system-ui, sans-serif";
-  ctx.fillStyle = "rgba(255,255,255,0.92)";
-  ctx.fillText(`best ${state.best}`, 24, 78);
+  ctx.fillStyle = "rgba(255,255,255,0.94)";
+  ctx.fillText(`BEST ${state.best}`, 28, 84);
 
   if (state.mode === "ready") {
     ctx.textAlign = "center";
-    ctx.font = "600 26px system-ui, sans-serif";
-    ctx.fillText("Click or press SPACE to launch", width / 2, height / 2 - 32);
-    ctx.font = "400 18px system-ui, sans-serif";
-    ctx.fillText("Float through sky arches and collect points", width / 2, height / 2 + 6);
+    ctx.font = "600 24px system-ui, sans-serif";
+    ctx.fillText("Tap or press SPACE to start", width / 2, height / 2 - 28);
+    ctx.font = "400 16px system-ui, sans-serif";
+    ctx.fillText("Guide the balloon through the sky", width / 2, height / 2 + 4);
   }
 
   if (state.mode === "over") {

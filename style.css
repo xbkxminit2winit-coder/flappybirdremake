@@ -8,8 +8,8 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: radial-gradient(circle at top, #315e96 0%, #111c36 55%, #07111f 100%);
-  color: #f1f7ff;
+  background: radial-gradient(circle at top, #c8f0ff 0%, #7ebcf0 20%, #0b1c48 60%, #071125 100%);
+  color: #f8fbff;
   font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
@@ -17,30 +17,32 @@ body {
   text-align: center;
   width: 100%;
   max-width: 520px;
-  padding: 16px;
+  padding: 18px;
 }
 
 header h1 {
   margin: 0;
-  font-size: clamp(2rem, 4vw, 3rem);
+  font-size: clamp(2.2rem, 4vw, 3.4rem);
+  letter-spacing: 0.04em;
+  text-shadow: 0 8px 20px rgba(13, 31, 77, 0.4);
 }
 
 header p,
 footer p {
   margin: 10px 0 0;
   font-size: 0.95rem;
-  color: #d9e7ff;
+  color: rgba(248, 251, 255, 0.88);
 }
 
 canvas {
   width: 100%;
-  max-width: 480px;
+  max-width: 520px;
   height: auto;
-  border-radius: 20px;
-  box-shadow: 0 20px 80px rgba(0, 0, 0, 0.35);
-  background: #0b1741;
+  border-radius: 28px;
+  box-shadow: 0 24px 90px rgba(4, 12, 33, 0.45);
+  background: linear-gradient(180deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.02) 100%);
   display: block;
-  margin: 16px auto;
+  margin: 18px auto;
 }
 
 footer {
